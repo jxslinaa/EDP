@@ -1,0 +1,295 @@
+﻿@model IList<EducProj.Models.Workshopitems>
+@{
+    ViewData["Title"] = "Dashboard";
+    ViewBag.Title = "Dashboard";
+}
+<style>
+    #wrapper {
+        background-color: #b0f0ff;
+    }
+    .text-gray-800 {
+        color: #5a5c69 !important;
+    }
+    .container-fluid {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+    .text-xs {
+        font-size: .7rem;
+    }
+    .font-weight-bold {
+        font-weight: 700 !important;
+    }
+    .border-left-primary {
+        border-left: .25rem solid #4e73df !important;
+    }
+    .text-gray-300 {
+        color: #dddfeb !important;
+    }
+    .py-2 {
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid #e3e6f0;
+        border-radius: .35rem;
+    }
+    .border-left-success {
+        border-left: .25rem solid #1cc88a !important;
+    }
+    .border-left-info {
+        border-left: .25rem solid #36b9cc !important;
+    }
+    .border-left-warning {
+        border-left: .25rem solid #f6c23e !important;
+    }
+    .card-header {
+        background-color: rgb(229 229 229);
+    }
+    .list-card {
+        border-radius: 8px !important;
+    }
+    .list-card-header {
+        border-radius: 8px !important;
+        box-shadow: 0 2px 2px 0 rgb(0 0 0 / 16%), 0 0 0 1px rgb(0 0 0 / 8%) !important;
+    }
+    .workshop-card-footer {
+        padding:0px !important;
+        border-top:0px;
+    }
+    .cart-btn {
+        padding: 10px;
+        width: 120px;
+    }
+    .cart-pay-btn {
+        border-radius: 0px 0px 8px 0px !important;
+    }
+    .br-0 {
+        border-radius:0px;
+    }
+    .btn-primary {
+        background-color: #0f94b2;
+        border-color: #007bff;
+    }
+        .btn-primary:hover, .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show > .btn-primary.dropdown-toggle {
+            color: #fff;
+            background-color: #19768b;
+            border-color: #0f94b2;
+        }
+    .card-footer {
+        background-color: rgb(255 255 255)
+    }
+</style>
+<div class="container-fluid" style="">
+    <div class="row">
+        <div class="col-sm-6  float-left">
+            <nav aria-label="breadcrumb" style="background-color: #b0f0ff">
+                <ol class="breadcrumb" style="background-color: #b0f0ff">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Workshops</a></li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-6  float-right">
+            <div class="d-sm-flex mb-2 mt-2 ml-3 pr-4 float-right">
+
+                @{
+                    if (!String.IsNullOrEmpty(ViewData["cartCount"].ToString()) && ViewData["cartCount"].ToString() != "0")
+                    {
+                        <div class="alert alert-light float-right" role="alert">
+                            You have @ViewData["cartCount"] Courses and the total amount is  $@ViewData["orderTotal"], Click <a href="../Dashboard/checkout">here  </a> for checkout
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+
+        <div class="row">
+            <div class="col-sm-12">
+
+                <div class="col-sm-3 float-left">
+
+                    <div class="card" style="background-color: #b0f0ff">
+
+                        <h2 class=" mb-1 mt-4 text-gray-800 text-center ">Filters</h2>
+
+
+
+                        <div class="col-sm-12">
+                            <b class="pl-3"><u>Price Range</u></b>
+                        </div>
+                        <div class="col-sm-12  pt-2">
+                            <div class="col-sm-6 float-left">
+                                <div class="form-group">
+                                    <label>Min</label>
+                                    <input type="text" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6 float-left">
+                                <div class="form-group">
+                                    <label>Max</label>
+                                    <input type="text" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <b class="pl-3"><u>Location</u></b>
+                        </div>
+                        <div class="col-sm-12  pt-2">
+                            <div class="form-group pl-3 pr-3">
+                                <select class="form-control w-100">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <b class="pl-3"><u>Workshop Lessons</u></b>
+                        </div>
+                        <div class="col-sm-12  pt-2">
+                            <div class="col-sm-6 float-left">
+                                <div class="form-group">
+                                    <label>From:</label>
+                                    <input type="date" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6 float-left">
+                                <div class="form-group">
+                                    <label>To:</label>
+                                    <input type="date" class="form-control form-control-sm" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <b class="pl-3"><u>Types</u></b>
+                        </div>
+                        <div class="col-sm-12  pt-2">
+                            <div class="form-group pl-3 pr-3">
+                                <select class="form-control w-100">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <b class="pl-3 "><u>Rating</u></b>
+                        </div>
+                        <div class="col-sm-12 pt-2">
+                            <div class="form-group pl-3 pr-3">
+                                <select class="form-control w-100">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 pt-2 mb-4" style=" padding-left: 32px; padding-right: 32px;">
+                            <button type="button" class="btn  btn-outline-secondary btn-block">SUBMIT</button>
+                        </div>
+
+
+                    </div>
+
+
+                    </div>
+
+
+
+                <div class="col-sm-9 float-right">
+                    <div class="pb-4 pt-4">
+
+                        <div class="input-group mb-3" style="width:32%;float:left">
+                            <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" type="button">Search</button>
+                            </div>
+                        </div>
+
+
+                        <h1 class=" mb-3 text-gray-800 text-center " style="width:75%">Workshops</h1>
+                    </div>
+                    <div id="postLists pt-3">
+                        @{
+                            foreach (EducProj.Models.Workshopitems items in Model)
+                            {
+
+                                <div class="float-sm-left">
+
+                                    <div class="card list-card mb-4 shadow">
+                                        <div class="list-card-header card-header py-3">
+                                            <span class="time-span" style="float:left;"><i class="fa fa-clock-o"></i> 01d:02h:01m:58s left!</span>
+                                            <h6 class="m-0 align-items-center  d-flex flex-row justify-content-center">@items.SessionTitle</h6>
+                                        </div>
+                                        <div class="card-body pl-0">
+                                            <div class="col-sm-12 pl-0">
+                                                <div class="col-sm-3 float-left  ">
+                                                    <img class="img-thumbnail" src="../images/@items.WorkshopImages.FirstOrDefault().ImageDetails" />
+                                                </div>
+                                                <div class="col-sm-9 float-left">
+                                                    @(items.SessionDetails.Length >= 240 ? items.SessionDetails.Substring(0, 240) + "..." : items.SessionDetails)  <div class="row mt-5">
+                                                        <div class="col-sm-4">
+                                                            <ul>
+                                                                <li><i class="text-primary fa fas fa-crosshairs" aria-hidden="true"></i> @items.LocationCity</li>
+                                                                <li><i class="fa fa-users text-info" aria-hidden="true"></i> 0/45 have signed up!</li>
+                                                                <li><i class="fas fa-graduation-cap text-success" aria-hidden="true"></i> @items.TotalLessons Lessons</li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="col-sm-4">@items.LocationDetails</div>
+                                                        <div class="col-sm-4 float-right">
+                                                            <div class="btn-group float-right">@items.CreatedByName</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer workshop-card-footer">
+                                            <div class="float-left  pl-3"><i class="fa fa-users text-info" aria-hidden="true"></i> <b>0/45 have signed up!</b></div>
+                                            <form method="post" class="float-right" action="../CartManager/addToCart">
+                                            <input type="hidden" name="productId" value="@items.SessionId" /><input type="hidden" name="userId" value="@ViewData["userId"]" />
+                                                                                                             <div class="input-group-prepend">
+                                                                                                                                                     <a href="../WorkshopDetails/@items.SessionId" class="btn cart-btn br-0 btn-secondary"><i class="fa fa-info-circle" aria-hidden="true"></i> Details</a>
+                                                                                                                                                     <button type="submit" class="btn br-0 cart-btn cart-pay-btn btn-primary" title="Pay & Signup this session"><i class="fa fa-shopping-cart" aria-hidden="true"></i> $ @items.SessionCost</button>
+                                                                                                                                                 </div>
+                                            </form>
+                                            <div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <script>
+        // $(".suppSelect").chosen();
+        $(".fromDate").val('');
+        $(".toDate").val('');
+    </script>
+    <script>
+    $(document).ready(function () {
+
+    });
+    function addToCart(productId, userId) {
+        alert(userId);
+        $.post("CartManager/addToCart", { productId: productId,userId:userId}, function (data, status) {
+            //alert("Data: " + data + "\nStatus: " + status);
+        });
+        }
+        $(".ordertotal").html("@ViewData["cartCount"] Courses");
+        $(".username").html("$@ViewData["orderTotal"]");
+    </script>

@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    ViewBag.Title = "Dashboard";
+}
+<div class="container-fluid" style="">
+    <div class="d-sm-flex  justify-content-between mb-4 mt-2 ml-3">
+        <h1 class="h3 mb-0 text-gray-800">Products</h1>
+        @{
+            @Html.Raw(ViewData["cartSummary"].ToString());
+        }
+    </div>
+    <div id="postLists"></div>
+</div>

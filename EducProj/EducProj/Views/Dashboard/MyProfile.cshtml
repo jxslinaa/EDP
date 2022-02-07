@@ -1,0 +1,86 @@
+﻿@model EducProj.Models.Users
+@{
+    ViewData["Title"] = "Order Preview";
+    ViewBag.Title = "Order Preview";
+}
+<div class="container-fluid" style="">
+    <div class="d-sm-flex  justify-content-between mb-4 mt-2 ml-3">
+        <h1 class="h3 mb-0 text-gray-800">My Profile</h1>
+    </div>
+    <div class="card ">
+        <div class="card-body" id="content" style="background: #f8f9fa ; border: 1px solid #eeefef;">
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                </div>
+                <div class="panel-body">
+                    <form method="post" action="">
+                        <div class="col-sm-9 p-0 m-0">
+
+                            @{
+                                if (!String.IsNullOrEmpty(ViewData["errorMsg"].ToString()))
+                                {
+                                    if (ViewData["errorMsg"].ToString() == "-NA-")
+                                    {
+
+
+                                        <div class="alert alert-success" role="alert">
+                                            Profile updated successfully
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-warning" role="alert">
+                                            @ViewData["errorMsg"].ToString()
+                                        </div>
+
+                                    }
+                                }
+                            }
+                            <div class="row mt-3">
+
+                                <div class="col-sm-6">
+                                    <div class="form-group ">
+                                        <label for="FirstName" class="control-label col-sm-4 float-left">First Name </label>
+                                        <input type="text" name="FirstName" maxlength="70" class="form-control  col-sm-8 float-left" required placeholder="First Name" value="@Model.FirstName" />
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group ">
+                                        <label for="LastName" class="control-label col-sm-4 float-left">Last Name</label>
+                                        <input type="text" name="LastName" maxlength="70" class="form-control  col-sm-8 float-left" placeholder="Last Name" value="@Model.LastName" />
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-sm-6">
+                                    <div class="form-group ">
+                                        <label for="MobileNumber" class="control-label col-sm-4 float-left">Mobile Number</label>
+                                        <input type="text" name="MobileNumber" maxlength="12" class="form-control  col-sm-8 float-left" placeholder="Mobile Number" value="@Model.MobileNumber" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group ">
+                                        <label for="Email" class="control-label col-sm-4 float-left">Email</label>
+                                        <input type="email" name="Email" placeholder="Email" maxlength="250" class="  col-sm-8 float-left form-control" required value="@Model.Email" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row mt-5 ml-0 mb-3">
+                                <div class="col-sm-12">
+                                    <input type="submit" value="Update" class="btn btn-primary mr-2 float-left" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

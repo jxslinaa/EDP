@@ -1,0 +1,220 @@
+﻿@model EducProj.Models.Workshopitems
+@{
+    ViewData["Title"] = "My Workshopitems";
+    String[] workshopTypes = { "Finance", "Technology", "Hoby", "Others" };
+    String[] workshopLocations = { "Yishun", "Woodlands", "Bishan", "Novena" };
+}
+<div id="content-wrapper">
+    <div class="container-fluid">
+
+        <div class="card mb-3">
+            <div class="card-header">
+                 Workshopitem Details
+                <a href="/CartManager/MyWorkshops" class="btn-link float-right">Back</a>
+            </div>
+            <div class="card-body">
+                @{
+                    if (!String.IsNullOrEmpty(Context.Request.Query["msg"]))
+                    {
+                        <div class="alert alert-info" role="alert">
+                            @Context.Request.Query["msg"]
+                            <a href="../CartManager/MyOrders">Clear</a>
+                        </div>
+                    }
+                }
+
+            <div class="col-sm-12  pl-0 ml-0">
+
+                <form method="post" action="/CartManager/updateMySessionDetails" enctype="multipart/form-data">
+                    <div class="col-sm-9 p-0 m-0">
+                        <input name="SessionId" value="@Model.SessionId" type="hidden" />
+                        @{
+                            if (!String.IsNullOrEmpty(ViewData["errorMsg"].ToString()))
+                            {
+                                
+                                if (ViewData["errorMsg"].ToString() == "imgupdated")
+                                {
+                                    <div class="alert alert-success" role="alert">
+                                        Image details added successfully
+                                    </div>
+                                }
+
+                                if (ViewData["errorMsg"].ToString() == "-NA-" )
+                                {
+                                    <div class="alert alert-success" role="alert">
+                                        Workshop created successfully
+                                    </div>
+                                }
+                                else if(ViewData["errorMsg"].ToString() != "imgupdated")
+                                {
+                                    <div class="alert alert-warning" role="alert">
+                                        @ViewData["errorMsg"].ToString()
+                                    </div>
+
+                                }
+                            }
+                        }
+
+
+
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 float-left col-form-label">Title:</label>
+                            <input name="SessionTitle" value="@Model.SessionTitle" class="col-sm-8 float-left form-control" type="text" />
+                        </div>
+
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 float-left col-form-label">Details:</label>
+                            <textarea name="SessionDetails" style="min-height:120px;" class="col-sm-8 float-left form-control">@Model.SessionDetails</textarea>
+                        </div>
+
+
+
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 float-left col-form-label">Workshop Type:</label>
+                            <select class="form-control col-sm-8 float-left " value="@Model.SessionCategory" name="SessionCategory">
+
+                                <option value="">Select</option>
+                                @foreach (var wrkType in workshopTypes)
+                                {
+                                    
+                                    if (Model.SessionCategory == wrkType)
+                                    {
+                                        <option selected value="@wrkType">@wrkType</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@wrkType">@wrkType</option>
+                                    }
+
+                                }
+
+                            </select>
+                        </div>
+
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 float-left col-form-label">Location:</label>
+                            <select class="form-control col-sm-8 float-left " value="@Model.LocationCity" name="LocationCity">
+                                <option value="">Select</option>
+                                @foreach (var wrkLoc in workshopLocations)
+                                {
+                                    if (Model.LocationCity == wrkLoc)
+                                    {
+                                        <option selected value="@wrkLoc">@wrkLoc</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@wrkLoc">@wrkLoc</option>
+                                    }
+                                }
+
+                            </select>
+                        </div>
+
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 float-left col-form-label">Location Details:</label>
+                            <input name="SessionTitle" value="@Model.SessionTitle" class="form-control col-sm-8 float-left " type="text" />
+                        </div>
+
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 col-form-label float-left ">Session Schedule:</label>
+                            <input name="SessionSchedule" value="@Model.SessionSchedule" class="col-sm-8 float-left form-control" type="text" />
+                        </div>
+
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 float-left col-form-label">Registration Start Date:</label>
+                            <input name="RegStartDate" value="@Model.RegStartDate.ToString("yyyy-MM-dd")" class="col-sm-2 float-left form-control" type="date" />
+                        </div>
+
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 float-left col-form-label">Registration End Date:</label>
+                            <input name="RegEndDate" value="@Model.RegEndDate.ToString("yyyy-MM-dd")" class="col-sm-2 float-left form-control" type="date" />
+                        </div>
+
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 float-left col-form-label">First Lesson Date:</label>
+                            <input name="FirstLesDate" value="@Model.FirstLesDate.ToString("yyyy-MM-dd")" class="col-sm-2 float-left form-control" type="date" />
+                        </div>
+
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 float-left col-form-label">Last Lesson Date:</label>
+                            <input name="EndLesDate" value="@Model.EndLesDate.ToString("yyyy-MM-dd")" class="col-sm-2 float-left form-control" type="date" />
+                        </div>
+
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 float-left col-form-label">Price:</label>
+                            <input id="SessionCost" value="@Model.SessionCost" name="SessionCost" class="col-sm-2 float-left form-control" type="number" />
+                        </div>
+
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 float-left col-form-label">Total Attendees:</label>
+                            <input id="TotalSlots" value="@Model.TotalSlots" name="TotalSlots" class="col-sm-2 float-left form-control" type="number" />
+                        </div>
+
+                        <div class="col-sm-10">
+                            <button id="create" type="submit" value="Create" class="btn btn-primary">Update Details</button>
+                        </div>
+
+
+                    </div>
+                </form>
+
+                <table class="table table-bordered mt-4" >
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var imgDets in Model.WorkshopImages) {
+                            <tr>
+                                <td><img src="~/images/@imgDets.ImageDetails" style="max-width:75px;" class="img-thumbnail"/></td>
+                                <td><button onclick="removeSessionImage(@imgDets.SessionImageId,@imgDets.SessionId)" class="btn btn-sm btn-danger">Remove</button></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <form method="post" enctype="multipart/form-data" action="/CartManager/addMoreSessionImageDetails">
+                    <input name="SessionId" value="@Model.SessionId" type="hidden" />
+                    <div class="row form-group mt-5 mb-3">
+                        <label class="col-sm-4 col-form-label">Add More Image</label>
+                        <input type="file" id="SessionImageLocation"
+                               name="Fileinps" accept="image/*"
+                               multiple="multiple" /> <button type="submit" class="btn btn-primary">Upload</button>
+                    </div>
+
+                </form>
+
+            </div>
+
+
+
+
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+        <!-- Sticky Footer -->
+
+    </div>
+    <script>
+        function removeSessionImage(SessionImageId, SessionId) {
+            if (confirm("Confirm the delete operation?")) {
+                $.ajax({
+                    url: "/CartManager/RemoveSessionImage" ,
+                    type: 'DELETE',
+                    data: { imgId: SessionImageId, sessionId: SessionId },
+                    success: function (result) {
+                        if (result.status) {
+                            alert(result.message);
+                            window.location.reload();
+                        } else {
+                            alert(result.message);
+                        }
+                        // Do something with the result
+                    }
+                });
+            }
+
+            
+        }
+    </script>

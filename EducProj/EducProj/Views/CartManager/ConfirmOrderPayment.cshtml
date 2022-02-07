@@ -1,0 +1,274 @@
+﻿@model EducProj.Models.ConfirmOrderPayment
+<style>
+    .NameOnCard, .CardNumber, .Cvv, .ExpiryDate {
+        border-top-left-radius: 0.25rem !important;
+        border-bottom-left-radius: 0.25rem !important;
+    } 
+</style>
+<div class=" p-5 pageDetails">
+    <div class="col-sm-8  float-left row">
+        <div class="col-sm-6">
+            <div class="form-group float-left">
+                <div class="input-group mb-1">
+                    <label for="NameOnCard" class="control-label float-left w-100">Name on Credit Card</label>
+                    @Html.TextBoxFor(x => x.NameOnCard, new { @class = "NameOnCard form-control" })
+                    <div class="input-group-append validation-box">
+                        <span class="input-group-text" id="basic-addon2">
+                            <i class="fa fa-times text-danger NameOnCardFailed d-none" aria-hidden="true"></i>
+                            <i class="fa fa-check text-success NameOnCardSuccess d-none" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                </div>
+                <small class=" text-danger NameOnCardErrMsg">
+                   
+                </small>
+            </div>
+        </div>
+        <div class="col-sm-6 float-left">
+            <div class="form-group ">
+
+
+                <div class="input-group mb-1">
+                    <label for="CardNumber" class="control-label float-left w-100">Card Number</label>
+                    @Html.TextBoxFor(x => x.CardNumber, new { @class = "CardNumber form-control" })
+
+                    <div class="input-group-append validation-box">
+                        <span class="input-group-text" id="basic-addon2">
+                           
+                                    <i class="fa fa-times text-danger CardNumberFailed  d-none" aria-hidden="true"></i>
+                               
+                                    <i class="fa fa-check text-success CardNumberSuccess d-none" aria-hidden="true"></i>
+                               
+                        </span>
+                    </div>
+                </div>
+               
+                <small class=" text-danger CardNumberErrMsg">
+                    
+                </small>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-sm-12 row">
+        <div class="col-sm-4 float-left">
+            <div class="form-group ">
+                <div class="input-group mb-1" style="width:53%">
+                    <label for="ExpiryDate" class="control-label float-left w-100">Expiry Date</label>
+
+                    @Html.TextBoxFor(x => x.ExpiryDate, new { @class = "ExpiryDate form-control w-20" })
+                    <div class="input-group-append validation-box">
+                        <span class="input-group-text" id="basic-addon2">
+
+                            <i class="fa fa-times text-danger ExpiryDateFailed d-none" aria-hidden="true"></i>
+
+                            <i class="fa fa-check text-success ExpiryDateSuccess  d-none" aria-hidden="true"></i>
+
+                        </span>
+                    </div>
+                </div>
+                <small class=" text-danger ExpiryDateErrMsg">
+                </small>
+
+            </div>
+        </div>
+
+        <div class="col-sm-3 float-left">
+            <div class="form-group ">
+                <div class="input-group mb-1" style="width:82%">
+                    <label for="PhoneNumber" class="control-label w-100">CVV </label>
+
+                    @Html.TextBoxFor(x => x.Cvv, new { @class = "Cvv form-control" })
+                    <div class="input-group-append validation-box">
+                        <span class="input-group-text" id="basic-addon2">
+
+                            <i class="fa fa-times text-danger CvvFailed d-none" aria-hidden="true"></i>
+
+                            <i class="fa fa-check text-success CvvSuccess  d-none" aria-hidden="true"></i>
+
+                        </span>
+                    </div>
+                </div>
+
+                <small class=" text-danger CvvErrMsg">
+
+                </small>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="col-sm-12 row">
+        <div class="col-sm-8">
+            <div class="form-group  w-100 float-left">
+                <label for="Remarks" class="control-label">Comments </label>
+                @Html.TextAreaFor(m => m.Comments, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    <span class="text-danger errorDetails"></span>
+    <div class="col-sm-12 mt-3 row">
+        <div class="col-sm-4">
+
+            <a href="../CartManager/OrderPreview" class=" btn btn-secondary ">Previous</a>
+            <button type="button" class=" btn btn-primary " onclick="checkCardDetails()">Confirm Payment</button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function checkCardDetails() {
+        var nameOnCard = $(".NameOnCard").val();
+        var cardNumber = $(".CardNumber").val();
+        var expiryDate = $(".ExpiryDate").val().replace(' ','');
+        var cardCvv = $(".Cvv").val().replace(' ', '');
+        var Regesx = '/^[a-zA-Z]/';
+        var regExExpDate = /^\d{2}\/\d{4}$/;
+        var condition = false;
+        if (nameOnCard.trim() === "") {
+            $(".NameOnCardSuccess").addClass("d-none");
+            $(".NameOnCardFailed").removeClass("d-none");
+            $(".NameOnCardErrMsg").html("Nameoncard is required."); condition = false;
+        } else if (!nameOnCard.match(/^[A-Za-z]+$/)) {
+            $(".NameOnCardSuccess").addClass("d-none");
+            $(".NameOnCardFailed").removeClass("d-none");
+            $(".NameOnCardErrMsg").html("Alphabets only."); condition = false;
+        } else {
+            $(".NameOnCardSuccess").removeClass("d-none");
+            $(".NameOnCardFailed").addClass("d-none");
+            $(".NameOnCardErrMsg").html(""); condition = true;
+        }
+
+        if (cardNumber.trim() === "") {
+            $(".CardNumberSuccess").addClass("d-none");
+            $(".CardNumberFailed").removeClass("d-none");
+            $(".CardNumberErrMsg").html("Cardnumber is required."); condition = false;
+        } else if (isNaN(cardNumber.trim()) !== false) {
+            $(".CardNumberSuccess").addClass("d-none");
+            $(".CardNumberFailed").removeClass("d-none");
+            $(".CardNumberErrMsg").html("Invalid card number."); condition = false;
+        } else if (cardNumber.trim().length !== 16) {
+            $(".CardNumberSuccess").addClass("d-none");
+            $(".CardNumberFailed").removeClass("d-none");
+            $(".CardNumberErrMsg").html("Invalid card number."); condition = false;
+        } else {
+            $(".CardNumberSuccess").removeClass("d-none");
+            $(".CardNumberFailed").addClass("d-none");
+            $(".CardNumberErrMsg").html(""); condition = true;
+        }
+
+        if (expiryDate.trim() === "") {
+            $(".ExpiryDateSuccess").addClass("d-none");
+            $(".ExpiryDateFailed").removeClass("d-none");
+            $(".ExpiryDateErrMsg").html("ExpiryDate is required."); condition = false;
+        } else if (expiryDate.trim().length !== 7 ) {
+            $(".ExpiryDateSuccess").addClass("d-none");
+            $(".ExpiryDateFailed").removeClass("d-none");
+            $(".ExpiryDateErrMsg").html("Invalid expiry date."); condition = false;
+        } else {
+            $(".ExpiryDateSuccess").removeClass("d-none");
+            $(".ExpiryDateFailed").addClass("d-none");
+            $(".ExpiryDateErrMsg").html(""); condition = true;
+        }
+
+        if (cardCvv.trim() === "") {
+            $(".CvvSuccess").addClass("d-none");
+            $(".CvvFailed").removeClass("d-none");
+            $(".CvvErrMsg").html("cvv is required."); condition = false;
+        } else if (cardCvv.trim().length < 3) {
+            $(".CvvSuccess").addClass("d-none");
+            $(".CvvFailed").removeClass("d-none");
+            $(".CvvErrMsg").html("Invalid cvv."); condition = false;
+        } else {
+            $(".CvvSuccess").removeClass("d-none");
+            $(".CvvFailed").addClass("d-none");
+            $(".CvvErrMsg").html(""); condition = true;
+        }
+        if (condition) {
+            $.post("../CartManager/ConfirmOrderPayment", {
+                NameOnCard: $(".NameOnCard").val(),
+                CardNumber: $(".CardNumber").val(),
+                ExpiryDate: $(".ExpiryDate").val(),
+                Cvv:  $(".Cvv").val(),
+                BookingAmount: $("#Comments").val(),
+            }).done(function (data) {
+                //showSuccessMessage
+                //showErrorMessage
+                //showLoginMessage
+                //showNullMessage
+               
+                if (data.status) {
+                    $(".pageDetails").html(data.previewHtml)
+                } else {
+                    if (data.message === "showLoginMessage") {
+                        window.location.href = "../user/login";
+                    } else if (data.message === "showErrorMessage") {
+                        $(".errorDetails").html("Error while checkout")
+                    }
+                  //  window.location.href = "../CartManager/ConfirmOrderPayment";
+                    return;
+                }
+            });
+        }
+
+    }
+    $(".sproceedToPayment").click(function () {
+        $(".errMsg").addClass("d-none");
+
+    });
+    $(document).ready(function () {
+        $(":input").inputmask();
+        $(".ExpiryDate").inputmask({
+            mask: '99/9999',
+            placeholder: '  /    ',
+            showMaskOnHover: true,
+            showMaskOnFocus: false,
+            onBeforePaste: function (pastedValue, opts) {
+                var processedValue = pastedValue;
+
+                //do something with it
+
+                return processedValue;
+            }
+        });
+        $(".Cvv").inputmask({
+            mask: '9999',
+            placeholder: '    ',
+            showMaskOnHover: true,
+            showMaskOnFocus: true,
+            onBeforePaste: function (pastedValue, opts) {
+                var processedValue = pastedValue;
+                return processedValue;
+            }
+        });
+        $(".CardNumber").inputmask({
+            mask: '9999999999999999',
+            placeholder: '                ',
+            showMaskOnHover: true,
+            showMaskOnFocus: true,
+            onBeforePaste: function (pastedValue, opts) {
+                var processedValue = pastedValue;
+
+                //do something with it
+
+                return processedValue;
+            }
+        });
+
+
+    });
+
+</script>
+
+<style>
+    .validation-box .input-group-text {
+        background-color: #ffffff;
+        border-left: none;
+    }
+
+    .input-group .form-control {
+        border-right: none;
+    }
+</style>
+

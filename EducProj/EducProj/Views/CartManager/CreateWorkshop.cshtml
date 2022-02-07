@@ -1,0 +1,149 @@
+﻿@model EducProj.Models.Workshopitems
+@{
+    ViewData["Title"] = "Create Workshopitems";
+}
+<div id="content-wrapper">
+    <div class="container-fluid">
+
+        <div class="card mb-3">
+            <div class="card-header">
+                Create Workshopitem
+                <a href="../CartManager/CreateWorkshop" class="btn-link float-right">Back</a>
+            </div>
+            <div class="card-body">
+                @{
+                    if (!String.IsNullOrEmpty(Context.Request.Query["msg"]))
+                    {
+                        <div class="alert alert-info" role="alert">
+                            @Context.Request.Query["msg"]
+                            <a href="../CartManager/MyOrders">Clear</a>
+                        </div>
+                    }
+                }
+
+            <div class="col-sm-12  pl-0 ml-0">
+
+                <form method="post" action="" enctype="multipart/form-data">
+                    <div class="col-sm-9 p-0 m-0">
+
+                        @{
+                            if (!String.IsNullOrEmpty(ViewData["errorMsg"].ToString()))
+                            {
+                                if (ViewData["errorMsg"].ToString() == "-NA-")
+                                {
+                                    <div class="alert alert-success" role="alert">
+                                        Workshop created successfully
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="alert alert-warning" role="alert">
+                                        @ViewData["errorMsg"].ToString()
+                                    </div>
+
+                                }
+                            }
+                        }
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 col-form-label">Images:</label>
+                            <input type="file" id="SessionImageLocation"
+                                   name="Fileinps" accept="image/*"  required
+                                   multiple="multiple" />
+                        </div>
+
+                     
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 float-left col-form-label">Title:</label>
+                            <input name="SessionTitle" value="@Model.SessionTitle" required class="col-sm-8 float-left form-control" type="text"/>
+                        </div>
+
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 float-left col-form-label">Details:</label>
+                            <textarea name="SessionDetails" class="col-sm-8 float-left form-control" required style="min-height:120px">@Model.SessionDetails</textarea>
+                        </div>
+
+                     
+
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 float-left col-form-label">Workshop Type:</label>
+                            <select class="form-control col-sm-8 float-left " required value="@Model.SessionCategory"  name="SessionCategory">
+                                <option value="">Select</option>
+                                <option value="Finance">Finance</option>
+                                <option value="Technology">Technology</option>
+                                <option value="Hobby">Hobby</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 float-left col-form-label">Location:</label>
+                            <select class="form-control col-sm-8 float-left " required value="@Model.LocationCity"   name="LocationCity">
+                                <option value="">Select</option>
+                                <option value="Yishun">Yishun</option>
+                                <option value="Woodlands">Woodlands</option>
+                                <option value="Bishan">Bishan</option>
+                                <option value="Novena">Novena</option>
+                            </select>
+                        </div>
+
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 float-left col-form-label">Location Details:</label>
+                            <input name="LocationDetails" value="@Model.LocationDetails" required  class="form-control col-sm-8 float-left " type="text"/>
+                        </div>
+
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 col-form-label float-left ">Session Schedule:</label>
+                            <input name="SessionSchedule" value="@Model.SessionSchedule"  class="col-sm-8 float-left form-control" type="text"/>
+                        </div>
+
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 float-left col-form-label">Registration Start Date:</label>
+                            <input name="RegStartDate" value="@Model.RegStartDate"  required class="col-sm-2 float-left form-control" type="date"/>
+                        </div>
+
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 float-left col-form-label">Registration End Date:</label>
+                            <input name="RegEndDate" value="@Model.RegEndDate"  required  class="col-sm-2 float-left form-control" type="date"/>
+                        </div>
+
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 float-left col-form-label">First Lesson Date:</label>
+                            <input name="FirstLesDate" value="@Model.FirstLesDate" required class="col-sm-2 float-left form-control" type="date"/>
+                        </div>
+
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 float-left col-form-label">Last Lesson Date:</label>
+                            <input name="EndLesDate" value="@Model.EndLesDate" required  class="col-sm-2 float-left form-control" type="date"/>
+                        </div>
+
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 float-left col-form-label">Price:</label>
+                            <input id="SessionCost" value="@Model.SessionCost" required  name="SessionCost" class="col-sm-2 float-left form-control" type="text"/>
+                        </div>
+
+                        <div class="row form-group mt-3 mb-3">
+                            <label class="col-sm-4 float-left col-form-label">Total Attendees:</label>
+                            <input id="TotalSlots" value="@Model.TotalSlots" required  name="TotalSlots" class="col-sm-2 float-left form-control" type="number"/>
+                        </div>
+
+                        <div class="col-sm-10">
+                            <button id="create" type="submit" value="Create" class="btn btn-primary">create</button>
+</div>
+
+
+                    </div>
+                </form>
+
+
+            </div>
+             
+
+
+           
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+    <!-- Sticky Footer -->
+
+</div>
+

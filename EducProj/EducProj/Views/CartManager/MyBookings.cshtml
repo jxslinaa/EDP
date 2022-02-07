@@ -1,0 +1,147 @@
+﻿@model IList<EducProj.Models.OrderItems>
+@{
+    ViewData["Title"] = "Received Bookings";
+}
+<div id="content-wrapper">
+    <div class="container-fluid">
+
+        <div class="card mb-3">
+            <div class="card-header">
+                Received Bookings
+            </div>
+            <div class="card-body">
+                @{
+                    if (!String.IsNullOrEmpty(Context.Request.Query["msg"]))
+                    {
+                        <div class="alert alert-info" role="alert">
+                            @Context.Request.Query["msg"]
+                            <a href="../CartManager/MyOrders">Clear</a>
+                        </div>
+                    }
+                }
+
+                <div class="col-sm-12  pl-0 ml-0">
+
+                    <div class="col-sm-6 float-right">
+
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table descriptiontable table-bordered" id="dataTable" style="width:100%;font-size: 14px;" cellspacing="0">
+                        <thead class="thead-light">
+                            <tr>
+                                <th style=" width: 6%;">
+                                    SI.No
+                                </th>
+                                <th>
+                                    Title
+                                </th>
+                                <th>
+                                    Cost
+                                </th>
+                                <th>
+                                    Created On
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+
+                                <th style=" width:27%;">
+
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @if (Model != null && Model.Count >= 1)
+                            {
+                                int i = 1;
+                                foreach (EducProj.Models.OrderItems sessionDetails in Model)
+                                {
+                            <tr>
+                                <td style="vertical-align: middle;">
+                                    @i
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    @sessionDetails.productTitle
+                                </td>
+
+                                <td style="vertical-align: middle;">
+                                    @sessionDetails.ProductPrice
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    @sessionDetails.CreatedDate
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    @sessionDetails.BookingStatus
+                                </td>
+
+                                <td style="vertical-align: middle;">
+                                    <a href="../ViewBookingDetails/@sessionDetails.CartId" class="btn btn-outline-secondary" title="View Details & Update">Details </a>
+                                    <button onclick="confirmBooking(@sessionDetails.OrderItemId)" class="btn btn-s, btn-outline-primary" title="Confirm Order placement">Confirm Booking</button>
+                                    <button onclick="cancelBooking(@sessionDetails.OrderItemId)" class="btn btn-danger" title="Cancel booking and refund">Cancel Booking</button>
+                                </td>
+                            </tr>
+                                    i = i + 1;
+                                }
+                            }
+                            else
+                            {
+                                <tr><td colspan="8" class="text-center">No Records found</td></tr>
+                            }
+                        </tbody>
+
+                    </table>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+    <!-- Sticky Footer -->
+
+</div>
+<script>
+    function confirmBooking(cartId) {
+        if (confirm("This action will create slot for the selected booking?")) {
+            $.ajax({
+                url: "../CartManager/ConfirmBooking",
+                type: 'POST',
+                data: { cartId: cartId },
+                success: function (result) {
+                    if (result.status) {
+                        alert(result.message);
+                        window.location.reload();
+                    } else {
+                        alert(result.message);
+                    }
+                    // Do something with the result
+                }
+            });
+        }
+    }
+    function cancelBooking(cartId) {
+        if (confirm("Confirm the delete operation?")) {
+            $.ajax({
+                url: "../CartManager/RemoveBooking",
+                type: 'POST',
+                data: { cartId: cartId },
+                success: function (result) {
+                    if (result.status) {
+                        alert(result.message);
+                        window.location.reload();
+                    } else {
+                        alert(result.message);
+                    }
+                    // Do something with the result
+                }
+            });
+        }
+    }
+       
+</script>

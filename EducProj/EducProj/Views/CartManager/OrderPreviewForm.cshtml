@@ -1,0 +1,91 @@
+﻿@model EducProj.Models.BookingDetails 
+<div class="col-sm-12 pt-3 float-left row">
+    <div class="col-sm-4">
+        <div class="form-group float-left">
+            <label for="FirstName" class="control-label float-left">First Name </label>
+            <input type="text" name="FirstName" maxlength="70" class="FirstName form-control " required placeholder="First Name" value="" />
+            <small class="form-text text-danger d-none errMsg FirstNameErr">We'll never share your email with anyone else.</small>
+
+        </div>
+    </div>
+    <div class="col-sm-4 float-left">
+        <div class="form-group ">
+            <label for="LastName" class="control-label float-left">Last Name </label>
+            <input type="text" name="LastName" maxlength="70" class="LastName form-control " required placeholder="Last Name" value="" />
+            <small class="form-text text-danger d-none errMsg LastNameErr">We'll never share your email with anyone else.</small>
+        </div>
+    </div>
+    <div class="col-sm-4 float-left">
+        <div class="form-group ">
+            <label for="FirstName" class="control-labelfloat-left">Number of attendees </label>
+            <select class="form-control NumberOfAttendees" id="NumberOfAttendees">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+            <small class="form-text text-danger d-none errMsg NumberOfAttendeesErr">We'll never share your email with anyone else.</small>
+        </div>
+    </div>
+</div>
+<div class="col-sm-12 row">
+    <div class="col-sm-4 float-left">
+        <div class="form-group float-left">
+            <label for="PhoneNumber" class="control-label">Phone number </label>
+            <input type="number" name="PhoneNumber" maxlength="13" class="form-control  float-left PhoneNumber" required placeholder="Phone Number" value="" />
+            <small class="form-text text-danger d-none errMsg PhoneNumberErr">We'll never share your email with anyone else.</small>
+
+        </div>
+    </div>
+    <div class="col-sm-4 float-left">
+        <div class="form-group float-left">
+            <label for="Email" class="control-label">E-mail Address </label>
+            <input type="email" name="Email" maxlength="150" class="form-control Email float-left" required placeholder="Email" value="" />
+            <small class="form-text text-danger d-none errMsg EmailErr">We'll never share your email with anyone else.</small>
+
+        </div>
+    </div>
+</div>
+<div class="col-sm-12 row">
+    <div class="col-sm-8">
+        <div class="form-group  w-100 float-left">
+            <label for="Remarks" class="control-label">Remarks </label>
+            <textarea type="text" name="Remarks" maxlength="230" class="form-control Remarks float-left" required placeholder="Remarks" value=""></textarea>
+        </div>
+    </div>
+</div>
+<div class="col-sm-12 mt-3 row">
+    <div class="col-sm-4">
+        <button type="button" class=" btn btn-primary proceedToPayment">Proceed to Payment</button>
+    </div>
+</div>
+<script>
+    $(".proceedToPayment").click(function () {
+        $(".errMsg").addClass("d-none");
+        $.post("../CartManager/OrderBooking", {
+            FirstName:$(".FirstName").val(),
+            LastName: $(".LastName").val(),
+            SessionId: '@Model.SessionId',
+            CustomerId: '@Model.CustomerId',
+            BookingAmount: '@Model.BookingAmount',
+            NumberOfAttendees: $(".NumberOfAttendees").val(),
+            Remarks: $(".Remarks").val(),
+            Email: $(".Email").val(),
+            PhoneNumber: $(".PhoneNumber").val()
+
+        }).done(function (data) {
+            if (!data.status) {
+                var selectr = ("." + data.errKey)
+                $(selectr).text(data.errMsgs);
+                $(selectr).removeClass("d-none");
+            } else {
+                window.location.href = "../CartManager/ConfirmOrderPayment";
+                return;
+            }
+        });
+    })
+</script>
+
+
+       

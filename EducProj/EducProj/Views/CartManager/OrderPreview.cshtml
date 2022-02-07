@@ -1,0 +1,122 @@
+﻿@model IList<EducProj.Models.ShoppingCartItem>
+
+@{
+    ViewData["Title"] = "Order Preview";
+    ViewBag.Title = "Order Preview";
+    var bookingFOrm = new EducProj.Models.BookingDetails();
+    if (Model.Count != 0)
+    {
+        bookingFOrm.BookingAmount = Model.Sum(x => x.OrderPrice);
+        bookingFOrm.CustomerId = Model.FirstOrDefault().CustomerId;
+        bookingFOrm.SessionId = Model.FirstOrDefault().CartSessionId;
+    }
+}
+<div class="container-fluid  " style="">
+    @{
+        if (Model.Count == 0)
+        {
+            <div class="alert alert-warning m-3 mt-5" role="alert">
+                Your cart is empty.
+            </div>
+        }
+    }
+    @if (Model.Count >= 1)//model count starts
+    {
+        <h1 class="h3 mb-2 mt-2  text-gray-800">Order Confirmation</h1>
+        <p class="mb-3">
+            You have @Model.Count Orders
+        </p>
+
+        <div class="card">
+            <div class="card-body bg-white p-1 m-1">
+                <div class="col-sm-12 p-0 m-0">
+                    <div class="col-sm-5 p-2 float-left" style="height: 100vh;overflow-y:scroll">
+                        @{
+                            @Html.Raw(ViewData["cartSummary"].ToString());
+
+
+                            <table class="w-100">
+                                <tbody>
+                                    @foreach (EducProj.Models.ShoppingCartItem item in Model)
+                                    {
+
+                                        <tr>
+                                            <td class="p-0">
+                                                <table class="table table-bordered">
+                                                    <tr>
+                                                        <td colspan="2" class="p-0 text-center">
+                                                            <img class="img-thumbnail " src="../images/@item.workshopitems.WorkshopImages.FirstOrDefault().ImageDetails" style="width:150px;" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b> @item.workshopitems.SessionTitle</b></td>
+                                                        <td> Teacher:<b> @item.workshopitems.CreatedByName</b></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td> Location: <b> @item.workshopitems.LocationCity</b></td>
+                                                        <td> Workshop Schedule:<b> @item.workshopitems.SessionSchedule</b></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2"> Location Details:  <b>@item.workshopitems.LocationDetails</b></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="1">SessionCost :<b> @String.Format("{0:C}", item.workshopitems.SessionCost)</b></td>
+                                                        <td colspan="1"><button class="btn btn-danger" onclick=" deleteBasket(@item.CartItemId)">Remove</button></td>
+
+
+
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+
+                                    }
+                                </tbody>
+                            </table>
+                        }
+
+
+                    </div>
+                    @if (Model.Count != 0)
+                    {
+                        <div class="col-sm-7 float-left">
+                            <div class="col-sm-12 pt-2 pl-4 float-left row">
+                                <h5 class="text mt-2 mb-2"><u>Sign-up Details</u></h5>
+                            </div>
+                            @{
+
+                                Html.RenderPartial("OrderPreviewForm", bookingFOrm);
+
+                            }
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+        </div>
+
+    <script>
+        function deleteBasket(cartItemId) {
+            if (confirm("Confirm the delete operation?")) {
+                $.ajax({
+                    url: "../CartManager/removeCart",
+                    type: 'DELETE',
+                    data: { cartItemId: cartItemId },
+                    success: function (result) {
+                        if (result.status) {
+                            alert(result.message);
+                            window.location.href = "../CartManager/ConfirmPayment";
+                        } else {
+                            alert(result.message);
+                        }
+                        // Do something with the result
+                    }
+                });
+            }
+        }
+    </script>
+    //model count end
+}
+</div>
